@@ -1,11 +1,11 @@
 # yubikey_auth
 Python wrapper to validate Yubikey athentication
 
-required package:
-#yubico_client#: `pip install yubico-client`
+## required package:
+*yubico_client*: `pip install yubico-client`
 
-optional package:
-#inputimeout#: `pip install inputimeout`
+## optional package:  
+*inputimeout*: `pip install inputimeout`
 
 yubi.py is the config file with the API credentials from [Yubico API request](https://upgrade.yubico.com/getapikey/) and the `known_devices` tuple
 
