@@ -44,7 +44,7 @@ class YubiCheck():
 					# no input provided
 					return False
 		if len(inp.strip()) != 44:
-			# ubvakud input
+			# invalid input
 			return False
 		if strict and len(self.known_devices) > 0 and inp[:12] not in self.known_devices:
 			return False
