@@ -37,11 +37,12 @@ class YubiCheck():
 				else:
 					# python 3.x
 					inp = input('Touch Yubikey ')
-			try:
-				inp = inputimeout('Touch Yubikey ', 30)
-			except:
-				# no input provided
-				return False
+			else:
+				try:
+					inp = inputimeout('Touch Yubikey ', 30)
+				except:
+					# no input provided
+					return False
 		if len(inp.strip()) != 44:
 			# ubvakud input
 			return False
