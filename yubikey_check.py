@@ -26,7 +26,7 @@ class YubiCheck():
 
 		Keyword arguments:
 		inp -- str, Yubikey token value, if None will request user input
-		strict -- flag to check whether yubikey is a known device, if no devices are listed this is ignored
+		strict -- flag to check whether yubikey is a known device, if known_devices is empty this is ignored
 		"""
 		if inp is None:
 			if not has_ito:
