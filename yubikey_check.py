@@ -10,7 +10,7 @@ if 'inputimeout' in locals():
 else:
 	has_ito = False
 
-class YubiCheck():
+class YubiCheck(object):
 	"""class to verify Yubikey token"""
 	def __init__(self, client_id=None, key=None):
 		"""initialize API"""
