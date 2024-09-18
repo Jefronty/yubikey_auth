@@ -54,8 +54,17 @@ class YubiCheck(object):
 			return False
 
 if __name__ == "__main__":
-	yc = YubiCheck()
-	if len(sys.argv) > 1:
-		print(str(yc.yubi_check(sys.argv[1])))
-	else:
-		print(str(yc.yubi_check()))
+    import argparse
+    parser = argparse.ArgumentParser(description="Standalone script for verifying Yubikey touch")
+    parser.add_argument('token_str', nargs='?', help='output of Yubikey without flag')
+    parser.add_argument('-c', '--client', help='API client_id string')
+    parser.add_argument('-k', '--key', help='API secret_key string')
+    parser.add_argument('-t', '--token', help='output of Yubikey')
+    args = parser.parse_args()
+
+    token = args.token or args.token_str
+    cid = args.client
+    key = args.key
+
+    yc = YubiCheck(cid, key)
+    print(str(yc.yubi_check(token)))
