@@ -17,7 +17,10 @@ class YubiCheck(object):
 			client_id = yubi.client_id
 		if not key:
 			key = yubi.key
-		self.client = Yubico(client_id, key)
+		try:
+			self.client = Yubico(client_id, key)
+		except:
+			self.client = None
 
 	def response(self):
 		return self._response
@@ -54,7 +57,7 @@ class YubiCheck(object):
 			# invalid input
 			self._response = {'status': 'Failed', 'description': 'invalid token string provided'}
 			return False
-		if strict and len(self.known_devices) > 0 and inp[:12] not in self.known_devices:
+		if strict and self.known_devices and inp[:12] not in self.known_devices:
 			self._response = {'status': 'Failed', 'description': 'unauthorized key used'}
 			return False
 		try:
@@ -77,9 +80,9 @@ if __name__ == "__main__":
 
 	token = args.token or args.token_str
 	cid = args.client
-	key = args.key
+	api_key = args.key
 
-	yc = YubiCheck(cid, key)
+	yc = YubiCheck(cid, api_key)
 	print(str(yc.yubi_check(token)))
 	if args.verbose:
 		print(yc.response())
