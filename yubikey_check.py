@@ -69,7 +69,8 @@ class YubiCheck(object):
 
 if __name__ == "__main__":
 	import argparse
-	parser = argparse.ArgumentParser(description="Standalone script for verifying Yubikey touch")
+	desc = "Standalone script for verifying Yubikey touch\nAPI credentials can be gotten at https://upgrade.yubico.com/getapikey/\nand stored in yubi.py or passed as -c and -k values"
+	parser = argparse.ArgumentParser(description=desc)
 	parser.add_argument('token_str', nargs='?', help='output of Yubikey without flag')
 	parser.add_argument('-c', '--client', metavar='CID', help='API client_id string')
 	parser.add_argument('-k', '--key', help='API secret_key string')
