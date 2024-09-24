@@ -89,7 +89,7 @@ class YubiCheck(object):
 					inp = inputimeout('Touch Yubikey ', 30)
 				except Exception as e:
 					# no input provided
-					self._response = {'status': 'Failed', 'description': 'No token string provided', 'error': e}
+					self._response = {'status': 'Failed', 'description': 'No token string provided', 'error': str(e)}
 					return False
 		try:
 			inp = inp.lower().strip()
@@ -107,7 +107,7 @@ class YubiCheck(object):
 			self._response = self.client.verify(inp, return_response=True)
 			return self._response['status'] == 'OK'
 		except Exception as e:
-			self._response = {'status': 'Failed', 'description': 'API Error', 'error': e}
+			self._response = {'status': 'Failed', 'description': 'API Error', 'error': str(e)}
 			return False
 
 if __name__ == "__main__":
