@@ -7,10 +7,11 @@ License: MIT
 API credential source: https://upgrade.yubico.com/getapikey/
 
 CLI usage:
-python yubikey_check.py [-hVv] [-c API_CLIENT_ID] [-k API_SECRET_KEY] [-t] [TOKEN]
+python yubikey_check.py [-h][-Vvs] [-c API_CLIENT_ID] [-k API_SECRET_KEY] [-t] [TOKEN]
 -h, --help: display help text
 -V, --verbose: enable verbose output, show API response as dict
 -v, --version: display version information
+-s, --strict: olny validate known Yubikeys, ignored if none in config
 -c ID, --client ID: API client ID value from yubico
 -k KEY, --key KEY: API secret key value from yubico
 -t TOKEN, --token TOKEN: output from touching yubikey
@@ -22,7 +23,7 @@ config file: yubi.py
   known_devices: tuple of specified yubikey prefixes to be used when doing strict validation
 """
 
-__version__ = (1,0,3)
+__version__ = (1,0,4)
 
 import sys
 from yubico_client import Yubico
@@ -117,6 +118,7 @@ if __name__ == "__main__":
 	parser.add_argument('-c', '--client', metavar='CID', help='API client_id string')
 	parser.add_argument('-k', '--key', help='API secret_key string')
 	parser.add_argument('-t', '--token', metavar='STR', help='output of Yubikey')
+	parser.add_argument('-s', '--strict', action='store_true', help='only validate known Yubikeys if any in known_devices')
 	parser.add_argument('-V', '--verbose', action='store_true', help='display full response')
 	parser.add_argument('-v', '--version', action='version', version='Yubikey check v%s' % '.'.join(map(str, list(__version__))))
 
@@ -127,6 +129,6 @@ if __name__ == "__main__":
 	api_key = args.key
 
 	yc = YubiCheck(cid, api_key)
-	print(str(yc.yubi_check(token)))
+	print(str(yc.yubi_check(token, args.strict)))
 	if args.verbose:
 		print(yc.response())
