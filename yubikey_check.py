@@ -23,7 +23,7 @@ config file: yubi.py
   known_devices: tuple of specified yubikey prefixes to be used when doing strict validation
 """
 
-__version__ = (1,0,4)
+__version__ = (1,0,5)
 
 import sys
 from yubico_client import Yubico
@@ -37,7 +37,7 @@ import yubi
 
 class YubiCheck(object):
 	"""class to verify Yubikey token"""
-	_response = None
+	_message = None
 	def __init__(self, client_id=None, key=None):
 		"""initialize API"""
 		self.known_devices = yubi.known_devices
@@ -52,9 +52,21 @@ class YubiCheck(object):
 		except:
 			self.client = None
 
-	def response(self):
-		"""return content of _response attribute"""
-		return self._response
+	def add_device(self, dev_str):
+		"""add a device to the known_devices"""
+		if dev_str in self.known_devices:
+			return True
+		if not isinstance(dev_str, str) or len(dev_str) < 12:
+			self._message = {'status': 'Error', 'description': 'invalid device string provided: must be a 12 character string'}
+			return False
+		_dev = dev_str[:12]
+		if _dev not in self.known_devices:
+			self.known_devices += (_dev,)
+		return True
+
+	def message(self):
+		"""return content of _message attribute"""
+		return self._message
 
 	def set_credentials(self, client_id=None, key=None):
 		"""override credentials set in __init__"""
@@ -89,25 +101,25 @@ class YubiCheck(object):
 					inp = inputimeout('Touch Yubikey ', 30)
 				except Exception as e:
 					# no input provided
-					self._response = {'status': 'Failed', 'description': 'No token string provided', 'error': str(e)}
+					self._message = {'status': 'Failed', 'description': 'No token string provided', 'error': str(e)}
 					return False
 		try:
 			inp = inp.lower().strip()
 		except:
-			self._response = {'status': 'Failed', 'description': 'non-string token value provided'}
+			self._message = {'status': 'Failed', 'description': 'non-string token value provided'}
 			return False
 		if len(inp) != 44:
 			# invalid input
-			self._response = {'status': 'Failed', 'description': 'invalid token string provided'}
+			self._message = {'status': 'Failed', 'description': 'invalid token string provided'}
 			return False
 		if strict and self.known_devices and inp[:12] not in self.known_devices:
-			self._response = {'status': 'Failed', 'description': 'unauthorized key used'}
+			self._message = {'status': 'Failed', 'description': 'unauthorized key used'}
 			return False
 		try:
-			self._response = self.client.verify(inp, return_response=True)
-			return self._response['status'] == 'OK'
+			self._message = self.client.verify(inp, return_response=True)
+			return self._message['status'] == 'OK'
 		except Exception as e:
-			self._response = {'status': 'Failed', 'description': 'API Error', 'error': str(e)}
+			self._message = {'status': 'Failed', 'description': 'API Error', 'error': str(e)}
 			return False
 
 if __name__ == "__main__":
@@ -131,4 +143,4 @@ if __name__ == "__main__":
 	yc = YubiCheck(cid, api_key)
 	print(str(yc.yubi_check(token, args.strict)))
 	if args.verbose:
-		print(yc.response())
+		print(yc.message())
