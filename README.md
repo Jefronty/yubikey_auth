@@ -1,5 +1,5 @@
 # yubikey_auth
-Python wrapper to validate Yubikey TOTP athentication
+Python wrapper to validate Yubico OTP athentication
 
 ## required package:
 *[yubico_client](https://github.com/Kami/python-yubico-client)*: `pip install yubico-client`
