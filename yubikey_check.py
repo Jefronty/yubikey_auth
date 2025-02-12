@@ -23,7 +23,7 @@ config file: yubi.py
   known_devices: tuple of specified yubikey prefixes to be used when doing strict validation
 """
 
-__version__ = (1,0,5)
+__version__ = (1,0,6)
 
 import sys
 from yubico_client import Yubico
@@ -64,6 +64,7 @@ class YubiCheck(object):
 			self.known_devices += (_dev,)
 		return True
 
+	@property
 	def message(self):
 		"""return content of _message attribute"""
 		return self._message
@@ -143,4 +144,4 @@ if __name__ == "__main__":
 	yc = YubiCheck(cid, api_key)
 	print(str(yc.yubi_check(token, args.strict)))
 	if args.verbose:
-		print(yc.message())
+		print(yc.message)
