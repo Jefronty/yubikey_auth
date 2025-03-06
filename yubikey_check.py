@@ -132,8 +132,8 @@ if __name__ == "__main__":
 	parser.add_argument('-k', '--key', help='API secret_key string')
 	parser.add_argument('-t', '--token', metavar='STR', help='output of Yubikey')
 	parser.add_argument('-s', '--strict', action='store_true', help='only validate known Yubikeys if any in known_devices')
-	parser.add_argument('-V', '--verbose', action='store_true', help='display full response')
-	parser.add_argument('-v', '--version', action='version', version='Yubikey check v%s' % '.'.join(map(str, list(__version__))))
+	parser.add_argument('-v', '--verbose', action='store_true', help='display full response')
+	parser.add_argument('-V', '--version', action='version', version='Yubikey check v%s' % '.'.join(map(str, list(__version__))))
 
 	args = parser.parse_args()
 
