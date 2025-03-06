@@ -9,8 +9,8 @@ API credential source: https://upgrade.yubico.com/getapikey/
 CLI usage:
 python yubikey_check.py [-h][-Vvs] [-c API_CLIENT_ID] [-k API_SECRET_KEY] [-t] [TOKEN]
 -h, --help: display help text
--V, --verbose: enable verbose output, show API response as dict
--v, --version: display version information
+-v, --verbose: enable verbose output, show API response as dict
+-V, --version: display version information
 -s, --strict: olny validate known Yubikeys, ignored if none in config
 -c ID, --client ID: API client ID value from yubico
 -k KEY, --key KEY: API secret key value from yubico
