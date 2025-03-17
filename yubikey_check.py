@@ -41,14 +41,10 @@ class YubiCheck(object):
 	def __init__(self, client_id=None, key=None):
 		"""initialize API"""
 		self.known_devices = yubi.known_devices
-		if not client_id:
-			client_id = yubi.client_id
-		self.client_id = client_id
-		if not key:
-			key = yubi.key
-		self.key = key
+		self.__client_id = client_id or yubi.client_id
+		self.__key = key or yubi.key
 		try:
-			self.client = Yubico(self.client_id, self.key)
+			self.client = Yubico(self.__client_id, self.__key)
 		except:
 			self.client = None
 
@@ -72,11 +68,11 @@ class YubiCheck(object):
 	def set_credentials(self, client_id=None, key=None):
 		"""override credentials set in __init__"""
 		if not client_id is None:
-			 self.client_id = client_id
+			 self.__client_id = client_id
 		if not key is None:
-			self.key = key
+			self.__key = key
 		try:
-			self.client = Yubico(self.client_id, self.key)
+			self.client = Yubico(self.__client_id, self.__key)
 		except:
 			return False
 		return True
@@ -138,10 +134,8 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	token = args.token or args.token_str
-	cid = args.client
-	api_key = args.key
 
-	yc = YubiCheck(cid, api_key)
+	yc = YubiCheck(args.client, args.key)
 	print(str(yc.yubi_check(token, args.strict)))
 	if args.verbose:
 		print(yc.message)
