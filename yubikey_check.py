@@ -37,7 +37,7 @@ import yubi
 
 class YubiCheck(object):
 	"""class to verify Yubikey token"""
-	_message = None
+	__message = None
 	def __init__(self, client_id=None, key=None):
 		"""initialize API"""
 		self.known_devices = yubi.known_devices
@@ -57,7 +57,7 @@ class YubiCheck(object):
 		if dev_str in self.known_devices:
 			return True
 		if not isinstance(dev_str, str) or len(dev_str) < 12:
-			self._message = {'status': 'Error', 'description': 'invalid device string provided: must be a 12 character string'}
+			self.__message = {'status': 'Error', 'description': 'invalid device string provided: must be a 12 character string'}
 			return False
 		_dev = dev_str[:12]
 		if _dev not in self.known_devices:
@@ -66,8 +66,8 @@ class YubiCheck(object):
 
 	@property
 	def message(self):
-		"""return content of _message attribute"""
-		return self._message
+		"""return content of __message attribute"""
+		return self.__message
 
 	def set_credentials(self, client_id=None, key=None):
 		"""override credentials set in __init__"""
@@ -102,25 +102,25 @@ class YubiCheck(object):
 					inp = inputimeout('Touch Yubikey ', 30)
 				except Exception as e:
 					# no input provided
-					self._message = {'status': 'Failed', 'description': 'No token string provided', 'error': str(e)}
+					self.__message = {'status': 'Failed', 'description': 'No token string provided', 'error': str(e)}
 					return False
 		try:
 			inp = inp.lower().strip()
 		except:
-			self._message = {'status': 'Failed', 'description': 'non-string token value provided'}
+			self.__message = {'status': 'Failed', 'description': 'non-string token value provided'}
 			return False
 		if len(inp) != 44:
 			# invalid input
-			self._message = {'status': 'Failed', 'description': 'invalid token string provided'}
+			self.__message = {'status': 'Failed', 'description': 'invalid token string provided'}
 			return False
 		if strict and self.known_devices and inp[:12] not in self.known_devices:
-			self._message = {'status': 'Failed', 'description': 'unauthorized key used'}
+			self.__message = {'status': 'Failed', 'description': 'unauthorized key used'}
 			return False
 		try:
-			self._message = self.client.verify(inp, return_response=True)
-			return self._message['status'] == 'OK'
+			self.__message = self.client.verify(inp, return_response=True)
+			return self.__message['status'] == 'OK'
 		except Exception as e:
-			self._message = {'status': 'Failed', 'description': 'API Error', 'error': str(e)}
+			self.__message = {'status': 'Failed', 'description': 'API Error', 'error': str(e)}
 			return False
 
 if __name__ == "__main__":
