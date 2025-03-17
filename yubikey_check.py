@@ -23,7 +23,7 @@ config file: yubi.py
   known_devices: tuple of specified yubikey prefixes to be used when doing strict validation
 """
 
-__version__ = (1,0,6)
+__version__ = (1,0,7)
 
 import sys
 from yubico_client import Yubico
